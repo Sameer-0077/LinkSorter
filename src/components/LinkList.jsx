@@ -1,7 +1,7 @@
 import React from "react";
 import LinkItem from "./LinkItems.jsx";
 
-export default function LinkList({ links, loadingIds }) {
+export default function LinkList({ links, loadingIds, deleteLink }) {
   if (!links.length)
     return <p className="text-gray-500">No links added yet.</p>;
 
@@ -12,6 +12,7 @@ export default function LinkList({ links, loadingIds }) {
           key={item.id}
           item={item}
           isLoading={loadingIds.has(item.id)}
+          deleteLink={deleteLink}
         />
       ))}
     </div>
