@@ -9,23 +9,28 @@ export default function App() {
   const [links, setLinks] = useState([]);
   const [loadingIds, setLoadingIds] = useState(new Set());
 
-  // 🔹 Load links from localStorage on app mount
+  // Load links from localStorage only once on mount
   useEffect(() => {
-    const saved = localStorage.getItem("linkSorterLinks");
-    if (saved) {
-      setLinks(JSON.parse(saved));
-    }
+    const savedLinks =
+      JSON.parse(localStorage.getItem("linkSorterLinks")) || [];
+    console.log("Loaded from localStorage:", savedLinks);
+    setLinks(savedLinks);
   }, []);
 
-  // 🔹 Save links to localStorage whenever they change
+  // Save links to localStorage whenever they change but if links length > 0
   useEffect(() => {
-    localStorage.setItem("linkSorterLinks", JSON.stringify(links));
+    // console.log("Saving to localStorage:", links);
+    if (links.length > 0) {
+      localStorage.setItem("linkSorterLinks", JSON.stringify(links));
+    }
   }, [links]);
 
   function addLinksFromText(text, { fetchDns }) {
     const parsed = parseUrlsFromText(text);
-    const newItems = parsed.map((p, i) => ({
-      id: Date.now() + i,
+
+    // Assign unique IDs ONLY when adding new links
+    const newItems = parsed.map((p) => ({
+      id: crypto.randomUUID(), // 🔥 Better unique ID
       url: p.url,
       domain: p.domain,
       dns: null,
@@ -72,13 +77,20 @@ export default function App() {
 
   function clearAll() {
     setLinks([]);
-    localStorage.removeItem("linkSorterLinks"); // 🔹 Also clear storage
+    localStorage.removeItem("linkSorterLinks"); // clear localStorage
   }
 
+  const deleteLink = (item) => {
+    const updatedLinks = links.filter((link) => link.id !== item.id);
+    setLinks(updatedLinks);
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-gray-100 p-6">
       <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow p-6">
-        <h1 className="text-2xl font-semibold mb-4">🔗 Link Sorter</h1>
+        <h1 className="text-2xl font-semibold mb-4 text-gray-700">
+          🔗 Link Sorter
+        </h1>
         <LinkInput onAdd={addLinksFromText} />
         <Controls
           onSortAlpha={sortAlpha}
@@ -86,7 +98,11 @@ export default function App() {
           onClear={clearAll}
           links={links}
         />
-        <LinkList links={links} loadingIds={loadingIds} />
+        <LinkList
+          links={links}
+          loadingIds={loadingIds}
+          deleteLink={deleteLink}
+        />
       </div>
     </div>
   );
