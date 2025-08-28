@@ -13,16 +13,14 @@ export default function App() {
   useEffect(() => {
     const savedLinks =
       JSON.parse(localStorage.getItem("linkSorterLinks")) || [];
-    console.log("Loaded from localStorage:", savedLinks);
+    // console.log("Loaded from localStorage:", savedLinks);
     setLinks(savedLinks);
   }, []);
 
   // Save links to localStorage whenever they change but if links length > 0
   useEffect(() => {
     // console.log("Saving to localStorage:", links);
-    if (links.length > 0) {
-      localStorage.setItem("linkSorterLinks", JSON.stringify(links));
-    }
+    localStorage.setItem("linkSorterLinks", JSON.stringify(links));
   }, [links]);
 
   function addLinksFromText(text, { fetchDns }) {
