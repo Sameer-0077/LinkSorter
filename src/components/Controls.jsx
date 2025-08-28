@@ -28,26 +28,35 @@ export default function Controls({
 
   return (
     <div className="flex flex-wrap gap-2 mb-4">
-      <button onClick={onSortAlpha} className="px-3 py-2 bg-gray-200 rounded">
+      <button
+        onClick={onSortAlpha}
+        className="px-3 py-2 bg-gray-200 rounded hover:bg-gray-300"
+      >
         Sort A→Z
       </button>
-      <button onClick={onSortDomain} className="px-3 py-2 bg-gray-200 rounded">
+      <button
+        onClick={onSortDomain}
+        className="px-3 py-2 bg-gray-200 rounded hover:bg-gray-300"
+      >
         Sort by Domain
       </button>
       <button
         onClick={copyToClipboard}
-        className="px-3 py-2 bg-gray-200 rounded"
+        className="px-3 py-2 bg-gray-200 rounded hover:bg-gray-300"
       >
         Copy
       </button>
-      <button onClick={exportCSV} className="px-3 py-2 bg-gray-200 rounded">
+      <button
+        onClick={exportCSV}
+        className="px-3 py-2 bg-gray-200 rounded hover:bg-gray-300"
+      >
         Export CSV
       </button>
       <button
         onClick={onClear}
-        className="ml-auto px-3 py-2 bg-red-200 text-red-700 rounded"
+        className="ml-auto px-3 py-2 font-medium bg-red-200 text-red-500 rounded hover:text-red-600 hover:"
       >
-        Clear
+        Clear All
       </button>
     </div>
   );
